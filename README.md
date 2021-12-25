@@ -1,2 +1,2 @@
-# recipie-app-api
+# recipe-app-api
 django rest api sophisticated exploration and training

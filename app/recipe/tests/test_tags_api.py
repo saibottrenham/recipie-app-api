@@ -6,10 +6,10 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Tag
-from recipie.serializers import TagSerializer
+from recipe.serializers import TagSerializer
 
 
-TAGS_URL = reverse('recipie:tag-list')
+TAGS_URL = reverse('recipe:tag-list')
 
 
 class PublicTagsApiTestCase(TestCase):

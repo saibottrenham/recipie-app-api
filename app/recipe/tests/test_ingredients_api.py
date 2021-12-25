@@ -6,10 +6,10 @@ from rest_framework import status
 from rest_framework.test import APIClient
 
 from core.models import Ingredient
-from recipie.serializers import IngredientSerializer
+from recipe.serializers import IngredientSerializer
 
 
-INGREDIENTS_URL = reverse('recipie:ingredient-list')
+INGREDIENTS_URL = reverse('recipe:ingredient-list')
 
 
 class PublicIngredientsApiTest(TestCase):
