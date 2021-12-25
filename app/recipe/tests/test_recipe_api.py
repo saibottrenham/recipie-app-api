@@ -235,3 +235,45 @@ class RecipeImageUploadTests(TestCase):
         res = self.client.post(url, {'image': 'not image'}, format='multipart')
 
         self.assertEqual(res.status_code, status.HTTP_400_BAD_REQUEST)
+
+    def test_filter_recipes_by_tag(self):
+        """test returning recipe with specific tags"""
+        recipe1 = sample_recipe(user=self.user, title='thai')
+        recipe2 = sample_recipe(user=self.user, title='Aubergine')
+        tag1 = sample_tag(user=self.user, name='vegan')
+        tag2 = sample_tag(user=self.user, name='not vegan')
+        recipe1.tags.add(tag1)
+        recipe2.tags.add(tag2)
+        recipe3 = sample_recipe(user=self.user, title='fish and chips')
+
+        res = self.client.get(
+            RECIPES_URL,
+            {'tags': f'{tag1.id},{tag2.id}'}
+        )
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
+
+    def test_filter_recipes_by_ingredients(self):
+        """test returning recipe with specific ingredients"""
+        recipe1 = sample_recipe(user=self.user, title='thai')
+        recipe2 = sample_recipe(user=self.user, title='Aubergine')
+        ing1 = sample_ingredient(user=self.user, name='beans')
+        ing2 = sample_ingredient(user=self.user, name='meat')
+        recipe1.ingredients.add(ing1)
+        recipe2.ingredients.add(ing2)
+        recipe3 = sample_recipe(user=self.user, title='fish and chips')
+
+        res = self.client.get(
+            RECIPES_URL,
+            {'ingredients': f'{ing1.id},{ing2.id}'}
+        )
+        serializer1 = RecipeSerializer(recipe1)
+        serializer2 = RecipeSerializer(recipe2)
+        serializer3 = RecipeSerializer(recipe3)
+        self.assertIn(serializer1.data, res.data)
+        self.assertIn(serializer2.data, res.data)
+        self.assertNotIn(serializer3.data, res.data)
